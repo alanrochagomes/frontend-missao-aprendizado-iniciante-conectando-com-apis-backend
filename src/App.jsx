@@ -2,18 +2,16 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import Card from './components/Card/Card'
 import { ToastContainer, toast } from 'react-toast'
+import { Api } from './api/api'
 // import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   const [devmons, setDevmons] = useState([])
 
   async function fetchData() {
-    const apiUrl = 'https://backend-iniciante-integrar-com-frontend-uyiz.onrender.com/personagemm'
+    const apiUrl = Api.personagem.readAll()
   
-      const response = await fetch(apiUrl).catch(function (error) {
-        console.error('Erro ao chamar endpoint /personagem', error)
-        toast.error('Error ao carregar lista de Devmon')
-      })
+      const response = await Api.buildApiGetRequest(apiUrl)
     
       if (response.ok) {
         const data = await response.json()
