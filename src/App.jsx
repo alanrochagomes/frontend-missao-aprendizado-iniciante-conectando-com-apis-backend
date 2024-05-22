@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Card from './components/Card/Card'
+import { ToastContainer, toast } from 'react-toast'
+// import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   const [devmons, setDevmons] = useState([])
 
   async function fetchData() {
-    const apiUrl = 'https://backend-iniciante-integrar-com-frontend-uyiz.onrender.com/personagem'
+    const apiUrl = 'https://backend-iniciante-integrar-com-frontend-uyiz.onrender.com/personagemm'
   
-    const response = await fetch(apiUrl)
-  
-    const data = await response.json()
-
-    setDevmons(data)
+      const response = await fetch(apiUrl).catch(function (error) {
+        console.error('Erro ao chamar endpoint /personagem', error)
+        toast.error('Error ao carregar lista de Devmon')
+      })
+    
+      if (response.ok) {
+        const data = await response.json()
+    
+        setDevmons(data)
+      } else {
+        toast.error('Erro ao carregar lista de Devmon.')
+      }
   }
 
   useEffect(function () {
@@ -26,6 +35,7 @@ function App() {
           return <Card key={devmon.nome} item={devmon} />
         })}
       </div>
+      <ToastContainer />
     </>
   )
 }
